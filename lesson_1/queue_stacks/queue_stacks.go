@@ -4,29 +4,45 @@ package main
 import "fmt"
 
 type MyQueue struct {
-	stack []int
+	inStack  []int
+	outStack []int
 }
 
 func Constructor() MyQueue {
-	return MyQueue{stack: []int{}}
+	return MyQueue{
+		inStack:  []int{},
+		outStack: []int{},
+	}
 }
 
 func (this *MyQueue) Push(x int) {
-	this.stack = append(this.stack, x)
+	this.inStack = append(this.inStack, x)
 }
 
 func (this *MyQueue) Pop() int {
-	poped := this.stack[0]
-	this.stack = this.stack[1:]
+	this.move()
+	poped := this.outStack[len(this.outStack)-1]
+	this.outStack = this.outStack[:len(this.outStack)-1]
 	return poped
 }
 
 func (this *MyQueue) Peek() int {
-	return this.stack[0]
+	this.move()
+	return this.outStack[len(this.outStack)-1]
 }
 
 func (this *MyQueue) Empty() bool {
-	return len(this.stack) == 0
+	return len(this.inStack) == 0 && len(this.outStack) == 0
+}
+
+func (this *MyQueue) move() {
+	if len(this.outStack) == 0 {
+		for len(this.inStack) > 0 {
+			x := this.inStack[len(this.inStack)-1]
+			this.inStack = this.inStack[:len(this.inStack)-1]
+			this.outStack = append(this.outStack, x)
+		}
+	}
 }
 
 func main() {
