@@ -14,7 +14,7 @@ func TestHeapOperations(t *testing.T) {
 		finalHeap      []int
 	}{
 		{
-			name:     "Кейс 1",
+			name:     "Case 1",
 			heapSize: 4,
 			operations: [][]int{
 				{1},
@@ -29,7 +29,7 @@ func TestHeapOperations(t *testing.T) {
 			finalHeap:      []int{9, 4, 9},
 		},
 		{
-			name:     "Кейс 2",
+			name:     "Case 2",
 			heapSize: 1,
 			operations: [][]int{
 				{1},
@@ -38,7 +38,7 @@ func TestHeapOperations(t *testing.T) {
 			finalHeap:      []int{},
 		},
 		{
-			name:     "Кейс 3",
+			name:     "Case 3",
 			heapSize: 3,
 			operations: [][]int{
 				{2, 5},
@@ -50,7 +50,7 @@ func TestHeapOperations(t *testing.T) {
 			finalHeap:      []int{10, 5, 3},
 		},
 		{
-			name:     "Кейс 4",
+			name:     "Case 4",
 			heapSize: 2,
 			operations: [][]int{
 				{2, 15},
