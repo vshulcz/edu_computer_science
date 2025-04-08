@@ -14,30 +14,39 @@ func findKthLargest(nums []int, k int) int {
 }
 
 func quickSelect(nums []int, k int) int {
-	pivot := medianOfMedians(nums)
-	low, mid, high := partition(nums, pivot)
+	for {
+		pivot := medianOfMedians(nums)
+		lt, gt := partition(nums, pivot)
 
-	if k < len(low) {
-		return quickSelect(low, k)
-	} else if k < len(low)+len(mid) {
-		return pivot
-	} else {
-		return quickSelect(high, k-len(low)-len(mid))
+		if k < lt {
+			nums = nums[:lt]
+		} else if k < gt {
+			return pivot
+		} else {
+			nums = nums[gt:]
+			k -= gt
+		}
 	}
 }
 
-func partition(nums []int, pivot int) (low, mid, high []int) {
-	for _, v := range nums {
+func partition(nums []int, pivot int) (lt int, gt int) {
+	n := len(nums)
+	lt, i, gt := 0, 0, n
+
+	for i < gt {
 		switch {
-		case v < pivot:
-			low = append(low, v)
-		case v > pivot:
-			high = append(high, v)
+		case nums[i] < pivot:
+			nums[lt], nums[i] = nums[i], nums[lt]
+			lt++
+			i++
+		case nums[i] > pivot:
+			gt--
+			nums[i], nums[gt] = nums[gt], nums[i]
 		default:
-			mid = append(mid, v)
+			i++
 		}
 	}
-	return
+	return lt, gt
 }
 
 // BFPRT

@@ -1,5 +1,6 @@
 package revert
 
+// swap = n/2 + k/2 + (n-k)/2 = n
 func rotate1(nums []int, k int) {
 	n := len(nums)
 	k = k % n
@@ -16,6 +17,7 @@ func reverse(nums []int, start, end int) {
 	}
 }
 
+// swap = n
 func rotate2(nums []int, k int) {
 	n := len(nums)
 	k = k % n
