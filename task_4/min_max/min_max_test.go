@@ -5,24 +5,34 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/vshulcz/edu_computer_science/task_4/avl"
 )
 
 func runTest(commands []string) []int {
 	var result []int
-	var data []int
+	var root *avl.TreeNode
 
 	for _, line := range commands {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "Insert") {
 			numStr := strings.TrimSuffix(strings.TrimPrefix(line, "Insert("), ")")
 			num, _ := strconv.Atoi(numStr)
-			data = insert(data, num)
+			root = root.Insert(num)
 		} else if line == "GetMin" {
-			result = append(result, data[0])
-			data = data[1:]
+			node := root
+			for node.Left != nil {
+				node = node.Left
+			}
+			result = append(result, node.Val)
+			root = root.Erase(node.Val)
 		} else if line == "GetMax" {
-			result = append(result, data[len(data)-1])
-			data = data[:len(data)-1]
+			node := root
+			for node.Right != nil {
+				node = node.Right
+			}
+			result = append(result, node.Val)
+			root = root.Erase(node.Val)
 		}
 	}
 

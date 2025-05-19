@@ -7,23 +7,9 @@ import (
 	"os"
 	"strconv"
 	"strings"
-)
 
-func insert(sorted []int, val int) []int {
-	left, right := 0, len(sorted)
-	for left < right {
-		mid := (left + right) / 2
-		if sorted[mid] < val {
-			left = mid + 1
-		} else {
-			right = mid
-		}
-	}
-	sorted = append(sorted, 0)
-	copy(sorted[left+1:], sorted[left:])
-	sorted[left] = val
-	return sorted
-}
+	"github.com/vshulcz/edu_computer_science/task_4/avl"
+)
 
 func main() {
 	fin, err := os.Open("minmax.in")
@@ -46,7 +32,7 @@ func main() {
 	fmt.Fscan(in, &n)
 	in.ReadString('\n')
 
-	var data []int
+	var root *avl.TreeNode
 
 	for range n {
 		line, _ := in.ReadString('\n')
@@ -55,13 +41,21 @@ func main() {
 		if strings.HasPrefix(line, "Insert") {
 			numStr := strings.TrimSuffix(strings.TrimPrefix(line, "Insert("), ")")
 			num, _ := strconv.Atoi(numStr)
-			data = insert(data, num)
+			root = root.Insert(num)
 		} else if line == "GetMin" {
-			fmt.Fprintln(out, data[0])
-			data = data[1:]
+			node := root
+			for node.Left != nil {
+				node = node.Left
+			}
+			fmt.Fprintln(out, node.Val)
+			root = root.Erase(node.Val)
 		} else if line == "GetMax" {
-			fmt.Fprintln(out, data[len(data)-1])
-			data = data[:len(data)-1]
+			node := root
+			for node.Right != nil {
+				node = node.Right
+			}
+			fmt.Fprintln(out, node.Val)
+			root = root.Erase(node.Val)
 		}
 	}
 }

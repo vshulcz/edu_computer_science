@@ -46,30 +46,30 @@ func (st *SegmentTree) Modify(i, x int) {
 	i += st.n - 1
 	st.t[i] = Node{min: x, max: x}
 	for i > 1 {
-		i >>= 1
-		st.t[i] = Node{
-			min: min(st.t[i<<1].min, st.t[i<<1|1].min),
-			max: max(st.t[i<<1].max, st.t[i<<1|1].max),
+		st.t[i>>1] = Node{
+			min: min(st.t[i].min, st.t[i^1].min),
+			max: max(st.t[i].max, st.t[i^1].max),
 		}
+		i >>= 1
 	}
 }
 
 func (st *SegmentTree) Query(l, r int) int {
 	l += st.n - 1
-	r += st.n - 1
+	r += st.n
 	resMin := N + 1
 	resMax := -N - 1
 
-	for l <= r {
+	for l < r {
 		if l&1 == 1 {
 			resMin = min(resMin, st.t[l].min)
 			resMax = max(resMax, st.t[l].max)
 			l++
 		}
-		if r&1 == 0 {
+		if r&1 == 1 {
+			r--
 			resMin = min(resMin, st.t[r].min)
 			resMax = max(resMax, st.t[r].max)
-			r--
 		}
 		l >>= 1
 		r >>= 1
