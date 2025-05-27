@@ -35,7 +35,7 @@ firstLoop:
 	return ch
 }
 
-func factor(n *big.Int, primes []int) []*big.Int {
+func factor(n *big.Int, primes []int, gen <-chan *big.Int) []*big.Int {
 	var factors []*big.Int
 
 	for _, p := range primes {
@@ -55,7 +55,7 @@ func factor(n *big.Int, primes []int) []*big.Int {
 		return factors
 	}
 
-	gen := wheelGenerator(primes)
+	<-gen
 	sqrtN := new(big.Int)
 	for c := range gen {
 		sqrtN.Mul(c, c)
@@ -87,9 +87,10 @@ func main() {
 	n := new(big.Int)
 	n.SetString(s, 10)
 
-	primes := []int{2, 3, 5, 7}
+	primes := []int{2, 3, 5}
 
-	fac := factor(n, primes)
+	gen := wheelGenerator(primes)
+	fac := factor(n, primes, gen)
 
 	for i, f := range fac {
 		if i > 0 {

@@ -3,36 +3,61 @@ package main
 import (
 	"math/big"
 	"reflect"
+	"runtime"
 	"testing"
 )
 
-var N *big.Int = big.NewInt(21)
+var N, _ = new(big.Int).SetString("19590340644999083431262508198206381046123972390589368223882605328968666316379870661851951648789482321596229559115436019149189529725215266728292282990852649023362731392404017939142010958261393634959471483757196721672243410067118516227661133135192488848989914892157188308679896875137439519338903968094905549750386407106033836586660683539201011635917900039904495065203299749542985993134669814805318474080581207891125910", 10)
+
+const M = 10000
+
+func Benchmark3Primes(b *testing.B) {
+	runtime.GOMAXPROCS(1)
+	primes := []int{2, 3, 5}
+	gen := wheelGenerator(primes)
+	b.ResetTimer()
+	for range M {
+		factor(N, primes, gen)
+	}
+}
 
 func Benchmark4Primes(b *testing.B) {
+	runtime.GOMAXPROCS(1)
 	primes := []int{2, 3, 5, 7}
-	for i := 0; i < b.N; i++ {
-		factor(N, primes)
+	gen := wheelGenerator(primes)
+	b.ResetTimer()
+	for range M {
+		factor(N, primes, gen)
 	}
 }
 
 func Benchmark5Primes(b *testing.B) {
+	runtime.GOMAXPROCS(1)
 	primes := []int{2, 3, 5, 7, 11}
-	for i := 0; i < b.N; i++ {
-		factor(N, primes)
+	gen := wheelGenerator(primes)
+	b.ResetTimer()
+	for range M {
+		factor(N, primes, gen)
 	}
 }
 
 func Benchmark6Primes(b *testing.B) {
+	runtime.GOMAXPROCS(1)
 	primes := []int{2, 3, 5, 7, 11, 13}
-	for i := 0; i < b.N; i++ {
-		factor(N, primes)
+	gen := wheelGenerator(primes)
+	b.ResetTimer()
+	for range M {
+		factor(N, primes, gen)
 	}
 }
 
 func Benchmark7Primes(b *testing.B) {
+	runtime.GOMAXPROCS(1)
 	primes := []int{2, 3, 5, 7, 11, 13, 17}
-	for i := 0; i < b.N; i++ {
-		factor(N, primes)
+	gen := wheelGenerator(primes)
+	b.ResetTimer()
+	for range M {
+		factor(N, primes, gen)
 	}
 }
 

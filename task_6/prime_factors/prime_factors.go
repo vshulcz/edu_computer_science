@@ -5,6 +5,18 @@ import (
 	"math/rand"
 )
 
+func mulmod(a, b, m int64) int64 {
+	var res int64 = 0
+	for a != 0 {
+		if a&1 == 1 {
+			res = (res + b) % m
+		}
+		a >>= 1
+		b = (b << 1) % m
+	}
+	return res
+}
+
 func gcd(a, b int64) int64 {
 	for b != 0 {
 		a, b = b, a%b
@@ -20,9 +32,9 @@ func pollardRho(n int64) int64 {
 		y := x
 		var d int64 = 1
 		for d == 1 {
-			x = (x*x + c) % n
-			y = (y*y + c) % n
-			y = (y*y + c) % n
+			x = (mulmod(x, x, n) + c) % n
+			y = (mulmod(y, y, n) + c) % n
+			y = (mulmod(y, y, n) + c) % n
 			if x > y {
 				d = gcd(x-y, n)
 			} else {
